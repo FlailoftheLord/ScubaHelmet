@@ -42,7 +42,7 @@ HelmetDurability: 320
 DurabilityLossRate: 1
 
 # Where the durability message is displayed.
-# Valid types are "BOSSBAR" "ACTION_BAR" and "NONE"
+# Valid types are "BOSS_BAR" "ACTION_BAR" and "NONE"
 DurabilityDisplay: "ACTION_BAR"
 # how is the durability message shown? if the above display type is set to "NONE" this will be ignored.
 # use the placeholders 
@@ -88,10 +88,8 @@ HelmetLore:
 # If you want to use the plugin defaults simply set it to
 # HelmetEffects: []
 HelmetEffects:
-- "NIGHT_VISION"
+- "CONDUIT_POWER"
 - "REGENERATION"
-- "FAST_DIGGING"
-- "WATER_BREATHING"
 
 # The duration of the Potion Effects after the player leaves the water in seconds
 EffectDuration: 12

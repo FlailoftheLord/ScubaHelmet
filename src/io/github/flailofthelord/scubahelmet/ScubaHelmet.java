@@ -41,7 +41,7 @@ public class ScubaHelmet extends JavaPlugin {
 		server.getPluginManager().registerEvents(new HelmetEquip(), this);
 
 		cancelTasks();
-		new ScubaController().run(32);
+		new ScubaController().run(1);
 
 		this.getCommand("scubahelmet").setExecutor(new ScubaCommands());
 
@@ -64,6 +64,8 @@ public class ScubaHelmet extends JavaPlugin {
 	public void onDisable() {
 		utils.console("&bShutting down tasks...");
 		cancelTasks();
+		utils.console("&bRemoving recipe...");
+		server.resetRecipes();
 
 		utils.console("&3Goodbye!");
 	}

@@ -14,7 +14,7 @@ import io.github.flailofthelord.scubahelmet.ScubaHelmet;
 import io.github.flailofthelord.scubahelmet.tools.Logger;
 import me.flail.oldscubahelmet.Helmet.Helmet;
 import me.flail.oldscubahelmet.Helmet.HelmetItem;
-import me.flail.oldscubahelmet.Helmet.HelmetUseEvent;
+import me.flail.scubahelmet.ScubaController;
 
 public class ScubaCommands extends Logger implements CommandExecutor {
 
@@ -60,11 +60,13 @@ public class ScubaCommands extends Logger implements CommandExecutor {
 
 								plugin.reloadConfig();
 								plugin.config = plugin.getConfig();
-								server.getScheduler().runTaskTimer(plugin, new HelmetUseEvent(), 60, 32);
+
+								plugin.cancelTasks();
+								new ScubaController().run(1);
 
 								console.sendMessage(reloadMessage
 										+ chat(" &8(&7took " + (System.currentTimeMillis() - reloadStart) + " ms&8)", player));
-								player.sendMessage(reloadMessage);
+								player.sendMessage(chat(reloadMessage));
 
 							} else {
 								player.sendMessage(noPermission);

@@ -1,5 +1,6 @@
 package me.flail.scubahelmet.helmet;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -27,8 +28,9 @@ public class ScubaItem extends Logger {
 
 	private void create() {
 		String name = chat(plugin.config.get("HelmetName", "&3ScubaHelmet").toString());
-		Material type = Material.matchMaterial(plugin.config.get("HelmetType", "GLASS").toString().replaceAll("[a-zA-Z\\_]", ""));
-		List<String> lore = plugin.config.getStringList("HelmetLore");
+		Material type = Material.matchMaterial(plugin.config.get("HelmetType", "GLASS").toString().replaceAll("[^a-zA-Z\\_]", ""));
+		List<String> helmetLore = plugin.config.getStringList("HelmetLore");
+		List<String> lore = new ArrayList<>();
 
 		if (item == null) {
 			item = new ItemStack(type);
@@ -38,20 +40,12 @@ public class ScubaItem extends Logger {
 
 		meta.setDisplayName(name);
 
-		for (String line : lore) {
-			line = chat(line);
+		for (String line : helmetLore) {
+			lore.add(chat(line));
 		}
 		lore.add(" ");
 
 		meta.setLore(lore);
-
-
-		if (plugin.config.getBoolean("HelmetHasDurability", true)) {
-			int durability = plugin.config.getInt("HelmetDurability", 320);
-
-			setDurability(durability);
-			addTag("max-durability", durability + "");
-		}
 
 		if (plugin.config.getBoolean("EnchantedGlow", false)) {
 			meta.addEnchant(Enchantment.BINDING_CURSE, 1, true);
@@ -59,10 +53,19 @@ public class ScubaItem extends Logger {
 			meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
 		}
 
+		item.setItemMeta(meta);
+
 		setActiveEffects(plugin.config.getStringList("HelmetEffects"));
 		addTag("effect-duration", plugin.config.getInt("EffectDuraion", 12) + "");
 		addTag("effect-power", plugin.config.getInt("EffectPower", 1) + "");
 		addTag("effect-particles", plugin.config.getBoolean("HideEffectParticles", true) + "");
+
+		if (plugin.config.getBoolean("HelmetHasDurability", true) && !hasTag("durability")) {
+			int durability = plugin.config.getInt("HelmetDurability", 320);
+
+			setDurability(durability);
+			addTag("max-durability", durability + "");
+		}
 
 	}
 
@@ -89,21 +92,24 @@ public class ScubaItem extends Logger {
 		}
 
 		removeTag("effects");
-		addTag("effects", value.substring(0, value.length() - 2));
+		addTag("effects", value.substring(0, value.length() - 1));
 	}
 
-	public void setDurability(int durability) {
-		List<String> lore = itemMeta().getLore();
-		String durabilityDisplay = lore.get(lore.size() - 1);
+	public ScubaItem setDurability(long durability) {
+		List<String> lore = new ArrayList<>();
 
-		removeTag("durability");
-		addTag("durability", durability + "");
+		if (itemMeta().hasLore()) {
+			lore = itemMeta().getLore();
+		}
+		String durabilityDisplay = chat(lore.get(lore.size() - 1));
+
+		durabilityDisplay = chat("&8durability: " + durability);
 
 		if (durabilityDisplay.contains("durability:")) {
-			durabilityDisplay = chat("&8durability: " + durability);
+			lore.remove(lore.size() - 1);
 		}
 
-		lore.remove(lore.size() - 1);
+		lore.add(" ");
 		lore.add(durabilityDisplay);
 
 		ItemMeta meta = itemMeta();
@@ -111,6 +117,10 @@ public class ScubaItem extends Logger {
 
 		item.setItemMeta(meta);
 
+		removeTag("durability");
+		addTag("durability", durability + "");
+
+		return this;
 	}
 
 	public void addTag(String key, String value) {

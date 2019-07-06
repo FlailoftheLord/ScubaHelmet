@@ -4,12 +4,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.flailofthelord.scubahelmet.tools.Logger;
+import me.flail.scubahelmet.helmet.ScubaItem;
 
 public class Helmet extends Logger {
 
 	public static ItemStack helmet() {
 
-		return new HelmetItem().helmetItem();
+		return new ScubaItem().item();
 	}
 
 	public boolean isHelmet(ItemStack item) {

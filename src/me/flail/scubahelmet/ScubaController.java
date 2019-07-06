@@ -3,6 +3,7 @@ package me.flail.scubahelmet;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -31,7 +32,7 @@ public class ScubaController extends Logger {
 	public void run(int interval) {
 		plugin.cancelTasks();
 
-		new Runnable().runTaskTimer(plugin, 64L, interval * 20L);
+		new Runnable().runTaskTimer(plugin, 64L, interval * 32L);
 	}
 
 	private class Runnable extends BukkitRunnable {
@@ -56,8 +57,9 @@ public class ScubaController extends Logger {
 								String displayText = plugin.config.get("DurabilityMessage").toString();
 								int durability = scubaHelmet.getDurability();
 								int maxDurability = scubaHelmet.getMaxDurability();
+								double durabilityLossRate = plugin.config.getDouble("DurabilityLossRate");
 
-								scubaHelmet.setDurability(durability - 1);
+								scubaHelmet = scubaHelmet.setDurability(Math.round(durability - durabilityLossRate));
 								durability = scubaHelmet.getDurability();
 
 								displayText = displayText.replace("{player}", player.getName())
@@ -66,13 +68,32 @@ public class ScubaController extends Logger {
 
 								switch (displayType.toUpperCase()) {
 								case "ACTION_BAR":
-									player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(displayText));
+									player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(chat(displayText)));
 
 									break;
 								case "BOSS_BAR":
-									new HelmetUseEvent().durabilityBar(player, displayText, BarColor.BLUE, BarStyle.SEGMENTED_12,
-											maxDurability, durability);
+									if (durability >= 0) {
+										new HelmetUseEvent().durabilityBar(player, chat(displayText),
+												BarColor.BLUE,
+												BarStyle.SEGMENTED_12,
+												maxDurability, durability);
+									}
 
+								}
+
+								if (durability < 1) {
+
+									BossBar bar = plugin.server.getBossBar(
+											new NamespacedKey(plugin, plugin.namespacedKey.getKey() + "-" + player.getName()));
+									if (bar != null) {
+										bar.removePlayer(player);
+									}
+
+									player.getInventory().setHelmet(null);
+									player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 2, 1);
+									player.sendMessage(chat("{prefix} &7Your ScubaHelmet has broken.", player));
+
+									break;
 								}
 
 							}
@@ -84,9 +105,11 @@ public class ScubaController extends Logger {
 
 							for (String e : effectList) {
 								PotionEffectType effect = PotionEffectType.getByName(e.toUpperCase());
+
 								if (effect != null) {
+									player.removePotionEffect(effect);
 									player.addPotionEffect(
-											new PotionEffect(effect, effectDuration, effectPower - 1, effectParticles));
+											new PotionEffect(effect, effectDuration * 20, effectPower - 1, effectParticles));
 
 								}
 

@@ -22,7 +22,7 @@ public class Tools extends BaseUtilities {
 	}
 
 	public String chat(String message) {
-		return chatColor(message);
+		return chatColor(message.replace("{prefix}", plugin.getConfig().get("Prefix").toString()));
 	}
 
 	/**

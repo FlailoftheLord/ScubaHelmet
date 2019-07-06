@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.flailofthelord.scubahelmet.ScubaHelmet;
 import io.github.flailofthelord.scubahelmet.tools.Logger;
+import me.flail.scubahelmet.helmet.ScubaItem;
 
 public class HelmetRecipe extends Logger {
 
@@ -19,7 +20,7 @@ public class HelmetRecipe extends Logger {
 
 		FileConfiguration config = plugin.getConfig();
 
-		ItemStack sHelm = Helmet.helmet();
+		ItemStack sHelm = new ScubaItem().item();
 
 		ShapedRecipe helmet = new ShapedRecipe(plugin.namespacedKey, sHelm);
 
@@ -49,13 +50,12 @@ public class HelmetRecipe extends Logger {
 		}
 
 		try {
-			if (plugin.server.getRecipesFor(sHelm).isEmpty()) {
-				plugin.getServer().addRecipe(helmet);
-				plugin.console.sendMessage(chat("Recipe successfully registered!"));
-			}
+			plugin.getServer().addRecipe(helmet);
+			console("&bRecipe successfully registered!");
 
+			return;
 		} catch (Throwable t) {
-
+			console("&cCouldn't register ScubaHelmet recipe!");
 		}
 
 	}

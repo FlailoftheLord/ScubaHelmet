@@ -14,13 +14,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.flailofthelord.scubahelmet.ScubaHelmet;
 import io.github.flailofthelord.scubahelmet.tools.Logger;
+import me.flail.scubahelmet.helmet.ScubaItem;
 
 public class HelmetItem extends Logger {
 	private static ScubaHelmet plugin = ScubaHelmet.getPlugin(ScubaHelmet.class);
 
 	static FileConfiguration config = plugin.getConfig();
 
-	public ItemStack helmetItem() {
+	public ItemStack legacyHelmetItem() {
 
 		String helmetName = chatColor(config.getString("HelmetName", "&3ScubaHelmet"));
 		String helmetType = config.getString("HelmetType", "GLASS");
@@ -74,7 +75,7 @@ public class HelmetItem extends Logger {
 		String helmetEquipped = config.getString("HelmetEquippedMessage");
 		String emptySlotMessage = config.getString("EmptySlotErrorMessage");
 
-		ItemStack helmet = new ItemStack(helmetItem());
+		ItemStack helmet = new ScubaItem().item();
 
 		boolean hasHelmet = new Helmet().hasHelmet(player);
 		boolean hasHelmetInHand = new Helmet().hasHelmetInHand(player);
