@@ -1,0 +1,115 @@
+#-----------------------------------------------------------------
+#==================================================================#
+#                                                                  #
+#               ScubaHelmet by FlailoftheLord.                     #
+#        -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                   #
+#        For questions please join my discord server:              #
+#                https://discord.gg/wuxW5PS                        #
+#   ______               __        _____                           #
+#   |       |           /  \         |        |                    #
+#   |__     |          /____\        |        |                    #
+#   |       |         /      \       |        |                    #
+#   |       |_____   /        \    __|__      |______              #
+#                                                                  #
+#==================================================================#
+#-----------------------------------------------------------------
+
+# Plugin prefix for all Messages, use {prefix} as the placeholder.
+Prefix: "&7[&3&lS&b&lH&7]"
+
+ReloadMessage: "{prefix} &aScubaHelmet config file reloaded!"
+
+NoPermissionMessage: "{prefix} &cyou do not have permission to use this command"
+
+# Display name of the Helmet item
+HelmetName: "&3Scuba Helmet"
+
+# The Item Name Type for the Helmet
+# you can get a full list of the Bukkit Item Names here:
+#   https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+HelmetType: "GLASS"
+
+# Can the helmet have a cool enchanted-glowy effect?
+EnchantedGlow: false
+
+# Should the helmet have durability to it?
+HelmetHasDurability: true
+# The helmet durability amount.
+HelmetDurability: 320
+# How fast should the helmet lose per second
+# Example, if set to 2, it will lose 2 durability every second.
+# you can use decimals.
+DurabilityLossRate: 1
+
+# Where the durability message is displayed.
+# Valid types are "BOSSBAR" "ACTION_BAR" and "NONE"
+DurabilityDisplay: "ACTION_BAR"
+# how is the durability message shown? if the above display type is set to "NONE" this will be ignored.
+# use the placeholders 
+#  {current} for the current durability
+#  {max} for the maximum durability 
+# and {player} for the player wearing the scubahelmet.
+DurabilityMessage: "&3ScubaHelmet &bdurability&7: &f{current}&7/&f{max}"
+
+# Here's the Recipe Shape for crafting the ScubaHelmet!
+# Each Letter represents a Material Type.
+# Each line contains 3 materials in a 3x3 square aka. the crafting table...
+# Simply set the letters in the pattern you want, then define what each letter means below
+# Use the Bukkit Item Names, you can get the full list from here:
+#  https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+# Do not add any more Material types than I, as I = 9 and
+# 9 is the max number of slots in a crafting table inventory!
+HelmetRecipe:
+  Shape:
+    1: "BAB"
+    2: "ACA"
+    3: "DED"
+  Material:
+    A: "GLASS"
+    B: "SCUTE"
+    C: "NAUTILUS_SHELL"
+    D: "PHANTOM_MEMBRANE"
+    E: "GLASS_BOTTLE"
+    F: ""
+    G: ""
+    H: ""
+    I: ""
+
+# Lore shown on the Helmet item
+HelmetLore:
+- "&7Your fancy new Helmet!"
+- "&7enjoy your time"
+- "&7underwater!"
+
+# Effects, Here you can customize the effects given to the player!
+# for a full list of poition effects check here:
+# https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionEffectType.html
+# Feel free to add as many as you want :>
+# If you want to use the plugin defaults simply set it to
+# HelmetEffects: []
+HelmetEffects:
+- "NIGHT_VISION"
+- "REGENERATION"
+- "FAST_DIGGING"
+- "WATER_BREATHING"
+
+# The duration of the Potion Effects after the player leaves the water in seconds
+EffectDuration: 12
+
+# The Power Multiplier of the Potion Effects, default is 1
+EffectPower: 3
+
+# Hide the Potion Effect Particles???
+HideEffectParticles: false
+
+# Messages sent to the player.
+HelmetEquippedMessage: "{prefix} &byour scubahelmet has been equipped... swim safely!"
+
+HelmetResetMessage: "{prefix} &eyour helmet has been taken off!"
+
+EmptySlotErrorMessage: "{prefix} &cMake sure your helmet slot is empty before equipping a ScubaHelmet!"
+
+
+
+
+

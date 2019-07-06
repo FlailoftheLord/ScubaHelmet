@@ -1,0 +1,29 @@
+# ENjoy!!
+name: ScubaHelmet
+version: 1.3.4
+prefix: ScubaHelmet
+author: FlailoftheLord
+description: Portable conduit?? nupe, just a scuba ;>
+
+softdepend: [MicroCommands, MicroTools]
+
+main: io.github.flailofthelord.scubahelmet.ScubaHelmet
+api-version: 1.14
+
+permissions:
+  scubahelmet.use:
+    description: ability to use the scubahelmet
+    default: op
+  scubahelmet.command:
+    description: use the commands
+    default: op
+    children:
+      scubahelmet.command.get: true
+      scubahelmet.command.give: true
+      scubahelmet.command.reload: true
+
+commands:
+  scubahelmet:
+    usage: /scubahelmet [give:get:reload]
+    description: main command
+    aliases: [sh, scuba]
