@@ -44,6 +44,13 @@ DurabilityDisplay: "ACTION_BAR"
 # and {player} for the player wearing the scubahelmet.
 DurabilityMessage: "&3ScubaHelmet &bdurability&7: &f{current}&7/&f{max}"
 
+# Modify the debris left behind by the broken scuba helmet
+# the Drops list is the Item name followed by ' = ' and the quantity that should drop.
+BreakDebris:
+  Enabled: false
+  Drops:
+  - "nautilus_shell=1"
+
 # Here's the Recipe Shape for crafting the ScubaHelmet!
 # Each Letter represents a Material Type.
 # Each line contains 3 materials in a 3x3 square aka. the crafting table...
