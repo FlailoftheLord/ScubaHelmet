@@ -14,13 +14,6 @@
 #==================================================================#
 #-----------------------------------------------------------------
 
-# Plugin prefix for all Messages, use {prefix} as the placeholder.
-Prefix: "&7[&3&lS&b&lH&7]"
-
-ReloadMessage: "{prefix} &aScubaHelmet config file reloaded!"
-
-NoPermissionMessage: "{prefix} &cyou do not have permission to use this command"
-
 # Display name of the Helmet item
 HelmetName: "&3Scuba Helmet"
 
@@ -101,13 +94,13 @@ EffectPower: 3
 HideEffectParticles: false
 
 # Messages sent to the player.
+# Plugin prefix for all Messages, use {prefix} as the placeholder.
+Prefix: "&7[&3&lS&b&lH&7]"
+
+ReloadMessage: "{prefix} &aScubaHelmet config file reloaded!"
+NoPermissionMessage: "{prefix} &cyou do not have permission to use this command"
 HelmetEquippedMessage: "{prefix} &byour scubahelmet has been equipped... swim safely!"
-
 HelmetResetMessage: "{prefix} &eyour helmet has been taken off!"
-
 EmptySlotErrorMessage: "{prefix} &cMake sure your helmet slot is empty before equipping a ScubaHelmet!"
-
-
-
 
 

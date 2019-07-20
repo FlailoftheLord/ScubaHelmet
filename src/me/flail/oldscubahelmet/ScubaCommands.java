@@ -3,7 +3,6 @@ package me.flail.oldscubahelmet;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,14 +15,13 @@ import me.flail.oldscubahelmet.Helmet.Helmet;
 import me.flail.oldscubahelmet.Helmet.HelmetItem;
 import me.flail.scubahelmet.ScubaController;
 
-public class ScubaCommands extends Logger implements CommandExecutor {
+public class ScubaCommands extends Logger {
 
 	private ScubaHelmet plugin = ScubaHelmet.getPlugin(ScubaHelmet.class);
 
 	private Server server = plugin.getServer();
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+	public boolean command(CommandSender sender, Command command, String label, String[] args) {
 
 		FileConfiguration config = plugin.getConfig();
 		ConsoleCommandSender console = Bukkit.getConsoleSender();

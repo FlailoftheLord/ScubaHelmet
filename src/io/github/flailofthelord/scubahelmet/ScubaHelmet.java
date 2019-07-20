@@ -1,13 +1,18 @@
 package io.github.flailofthelord.scubahelmet;
 
+import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Server;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -38,12 +43,8 @@ public class ScubaHelmet extends JavaPlugin {
 		config = getConfig();
 
 		// Register events and commands
-		server.getPluginManager().registerEvents(new HelmetEquip(), this);
-
-		cancelTasks();
-		new ScubaController().run(1);
-
-		this.getCommand("scubahelmet").setExecutor(new ScubaCommands());
+		registerTasks();
+		registerCommand();
 
 		// Friendly console spam :>
 		String serverType = server.getVersion();
@@ -68,6 +69,20 @@ public class ScubaHelmet extends JavaPlugin {
 		server.resetRecipes();
 
 		utils.console("&3Goodbye!");
+	}
+
+	public void registerCommand() {
+		for (String cmd : getDescription().getCommands().keySet()) {
+			getCommand(cmd).setExecutor(this);
+			getCommand(cmd).setTabCompleter(this);
+		}
+	}
+
+	public void registerTasks() {
+		server.getPluginManager().registerEvents(new HelmetEquip(), this);
+
+		cancelTasks();
+		new ScubaController().run(1);
 	}
 
 	public void cancelTasks() {
@@ -102,6 +117,45 @@ public class ScubaHelmet extends JavaPlugin {
 
 		recipeHandler.helmetRecipe();
 
+	}
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		return new ScubaCommands().command(sender, command, label, args);
+	}
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+		List<String> tab = new ArrayList<>();
+		if (!command.getName().equalsIgnoreCase("scubahelmet")) {
+			return null;
+		}
+
+		switch (args.length) {
+		case 1:
+			tab.add("get");
+			tab.add("give");
+			tab.add("reload");
+			tab.add("on");
+			tab.add("off");
+			break;
+		case 2:
+			if (args[1].equalsIgnoreCase("give")) {
+				for (Player player : server.getOnlinePlayers()) {
+					tab.add(player.getName());
+				}
+
+			}
+
+		}
+
+		for (String s : tab.toArray(new String[] {})) {
+			if (!s.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
+				tab.remove(s);
+			}
+		}
+
+		return tab;
 	}
 
 }
