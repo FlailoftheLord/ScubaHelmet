@@ -1,5 +1,7 @@
 package me.flail.scubahelmet;
 
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -91,8 +93,27 @@ public class ScubaController extends Logger {
 
 									player.getInventory().setHelmet(null);
 									player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 2, 1);
-									player.sendMessage(chat("{prefix} &7Your ScubaHelmet has broken.", player));
 
+									if (plugin.config.getBoolean("BreakDebris.Enabled", false)) {
+										List<String> droppedItemInfo = plugin.config.getStringList("BreakDebris.Drops");
+										for (String info : droppedItemInfo) {
+											if (info.contains("=")) {
+												Material itemType = Material.matchMaterial(info.split("=")[0].toUpperCase());
+												int itemQuantity = Integer.parseInt(info.split("=")[1].replaceAll("[^0-9]", ""));
+
+												if (itemType != null) {
+
+													player.getWorld().dropItemNaturally(player.getLocation().add(0, 1, 0),
+															new ItemStack(itemType, itemQuantity));
+												}
+
+											}
+
+										}
+
+									}
+
+									player.sendMessage(chat("{prefix} &7Your ScubaHelmet has broken.", player));
 									break;
 								}
 
