@@ -1,7 +1,6 @@
 package me.flail.oldscubahelmet;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -13,13 +12,10 @@ import io.github.flailofthelord.scubahelmet.ScubaHelmet;
 import io.github.flailofthelord.scubahelmet.tools.Logger;
 import me.flail.oldscubahelmet.Helmet.Helmet;
 import me.flail.oldscubahelmet.Helmet.HelmetItem;
-import me.flail.scubahelmet.ScubaController;
 
 public class ScubaCommands extends Logger {
 
 	private ScubaHelmet plugin = ScubaHelmet.getPlugin(ScubaHelmet.class);
-
-	private Server server = plugin.getServer();
 
 	public boolean command(CommandSender sender, Command command, String label, String[] args) {
 
@@ -51,17 +47,7 @@ public class ScubaCommands extends Logger {
 							if (player.hasPermission("scubahelmet.command.reload")) {
 
 								long reloadStart = System.currentTimeMillis();
-
-								console.sendMessage(chat("Shutting down tasks..."));
-								server.getScheduler().cancelTasks(plugin);
-								console.sendMessage(chat("Reloading plugin..."));
-
-								plugin.reloadConfig();
-								plugin.config = plugin.getConfig();
-
-								plugin.cancelTasks();
-								new ScubaController().run(1);
-
+								plugin.reload();
 								console.sendMessage(reloadMessage
 										+ chat(" &8(&7took " + (System.currentTimeMillis() - reloadStart) + " ms&8)", player));
 								player.sendMessage(chat(reloadMessage));

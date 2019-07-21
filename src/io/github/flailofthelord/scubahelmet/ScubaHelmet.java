@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -69,6 +70,18 @@ public class ScubaHelmet extends JavaPlugin {
 		server.resetRecipes();
 
 		utils.console("&3Goodbye!");
+	}
+
+	public void reload() {
+		utils.nl();
+		utils.console("&7reloading ScubaHelmet...");
+
+		HandlerList.unregisterAll(this);
+		server.getScheduler().cancelTasks(this);
+
+		onDisable();
+		utils.nl();
+		onEnable();
 	}
 
 	public void registerCommand() {

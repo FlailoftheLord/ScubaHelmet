@@ -2,12 +2,15 @@ package me.flail.scubahelmet.helmet;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import io.github.flailofthelord.scubahelmet.tools.Logger;
 
@@ -28,13 +31,28 @@ public class ScubaItem extends Logger {
 
 	private void create() {
 		String name = chat(plugin.config.get("HelmetName", "&3ScubaHelmet").toString());
-		Material type = Material.matchMaterial(plugin.config.get("HelmetType", "GLASS").toString().replaceAll("[^a-zA-Z\\_]", ""));
+		String typeID = plugin.config.get("HelmetType", "GLASS").toString().toUpperCase();
+
+		Material type = Material.matchMaterial(typeID);
 		List<String> helmetLore = plugin.config.getStringList("HelmetLore");
 		List<String> lore = new ArrayList<>();
+
+		if (typeID.contains("PLAYER_HEAD=")) {
+			String headOwner = typeID.split("=")[1];
+			type = Material.PLAYER_HEAD;
+
+			item = new ItemStack(type);
+
+			SkullMeta meta = (SkullMeta) item.getItemMeta();
+			meta.setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString(headOwner)));
+			item.setItemMeta(meta);
+		}
 
 		if (item == null) {
 			item = new ItemStack(type);
 		}
+
+
 		addTag("scuba-helmet", "yes");
 		ItemMeta meta = itemMeta();
 
@@ -62,6 +80,9 @@ public class ScubaItem extends Logger {
 
 		if (plugin.config.getBoolean("HelmetHasDurability", true) && !hasTag("durability")) {
 			int durability = plugin.config.getInt("HelmetDurability", 320);
+			if (durability < 1) {
+				return;
+			}
 
 			setDurability(durability);
 			addTag("max-durability", durability + "");
@@ -97,9 +118,11 @@ public class ScubaItem extends Logger {
 
 	public ScubaItem setDurability(long durability) {
 		List<String> lore = new ArrayList<>();
+		ItemStack temp = item.clone();
+		ItemMeta meta = temp.getItemMeta();
 
-		if (itemMeta().hasLore()) {
-			lore = itemMeta().getLore();
+		if (meta.hasLore()) {
+			lore =meta.getLore();
 		}
 		String durabilityDisplay = chat(lore.get(lore.size() - 1));
 
@@ -112,13 +135,13 @@ public class ScubaItem extends Logger {
 		lore.add(" ");
 		lore.add(durabilityDisplay);
 
-		ItemMeta meta = itemMeta();
 		meta.setLore(lore);
-
-		item.setItemMeta(meta);
+		temp.setItemMeta(meta);
 
 		removeTag("durability");
 		addTag("durability", durability + "");
+
+		item = temp;
 
 		return this;
 	}

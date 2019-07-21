@@ -20,6 +20,10 @@ HelmetName: "&3Scuba Helmet"
 # The Item Name Type for the Helmet
 # you can get a full list of the Bukkit Item Names here:
 #   https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+# If you want to use a player head as the scuba item, format it like so:
+# HelmetType: "PLAYER_HEAD=insert-uuid-of-player-here"
+#  You can get the UUID from a player's skin head from here: 
+#   
 HelmetType: "GLASS"
 
 # Can the helmet have a cool enchanted-glowy effect?
