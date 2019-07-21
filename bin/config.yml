@@ -108,7 +108,7 @@ HideEffectParticles: false
 # Plugin prefix for all Messages, use {prefix} as the placeholder.
 Prefix: "&7[&3&lS&b&lH&7]"
 
-ReloadMessage: "{prefix} &aScubaHelmet config file reloaded!"
+ReloadMessage: "{prefix} &aplugin sucessfully reloaded!"
 NoPermissionMessage: "{prefix} &cyou do not have permission to use this command"
 HelmetEquippedMessage: "{prefix} &byour scubahelmet has been equipped... swim safely!"
 HelmetResetMessage: "{prefix} &eyour helmet has been taken off!"

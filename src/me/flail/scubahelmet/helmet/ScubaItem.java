@@ -81,10 +81,12 @@ public class ScubaItem extends Logger {
 		if (plugin.config.getBoolean("HelmetHasDurability", true) && !hasTag("durability")) {
 			int durability = plugin.config.getInt("HelmetDurability", 320);
 			if (durability < 1) {
-				return;
+				durability = 320;
 			}
 
 			setDurability(durability);
+
+
 			addTag("max-durability", durability + "");
 		}
 
@@ -99,7 +101,7 @@ public class ScubaItem extends Logger {
 	}
 
 	public int getDurability() {
-		return hasTag("durability") ? Integer.parseInt(getTag("durability")) : 0;
+		return hasTag("durability") ? Integer.parseInt(getTag("durability")) : -1;
 	}
 
 	public int getMaxDurability() {
@@ -118,19 +120,18 @@ public class ScubaItem extends Logger {
 
 	public ScubaItem setDurability(long durability) {
 		List<String> lore = new ArrayList<>();
+		removeTag("durability");
+		addTag("durability", durability + "");
+
 		ItemStack temp = item.clone();
 		ItemMeta meta = temp.getItemMeta();
 
 		if (meta.hasLore()) {
 			lore =meta.getLore();
 		}
-		String durabilityDisplay = chat(lore.get(lore.size() - 1));
+		String durabilityDisplay = chat("&8durability: " + durability);
 
-		durabilityDisplay = chat("&8durability: " + durability);
-
-		if (durabilityDisplay.contains("durability:")) {
-			lore.remove(lore.size() - 1);
-		}
+		lore.remove(lore.size() - 1);
 
 		lore.add(" ");
 		lore.add(durabilityDisplay);
@@ -138,10 +139,7 @@ public class ScubaItem extends Logger {
 		meta.setLore(lore);
 		temp.setItemMeta(meta);
 
-		removeTag("durability");
-		addTag("durability", durability + "");
-
-		item = temp;
+		item = temp.clone();
 
 		return this;
 	}

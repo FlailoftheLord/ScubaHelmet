@@ -58,6 +58,10 @@ public class ScubaController extends Logger {
 										.replaceAll("[^a-zA-Z\\_]", "");
 								String displayText = plugin.config.get("DurabilityMessage").toString();
 								int durability = scubaHelmet.getDurability();
+								if (durability < 0) {
+									continue;
+								}
+
 								int maxDurability = scubaHelmet.getMaxDurability();
 								double durabilityLossRate = plugin.config.getDouble("DurabilityLossRate");
 
@@ -83,8 +87,7 @@ public class ScubaController extends Logger {
 
 								}
 
-								if (durability < 1) {
-
+								if (durability == 0) {
 									BossBar bar = plugin.server.getBossBar(
 											new NamespacedKey(plugin, plugin.namespacedKey.getKey() + "-" + player.getName()));
 									if (bar != null) {
