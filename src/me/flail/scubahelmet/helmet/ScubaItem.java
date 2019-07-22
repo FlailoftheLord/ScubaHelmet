@@ -52,7 +52,6 @@ public class ScubaItem extends Logger {
 			item = new ItemStack(type);
 		}
 
-
 		addTag("scuba-helmet", "yes");
 		ItemMeta meta = itemMeta();
 
@@ -85,8 +84,6 @@ public class ScubaItem extends Logger {
 			}
 
 			setDurability(durability);
-
-
 			addTag("max-durability", durability + "");
 		}
 
@@ -123,23 +120,24 @@ public class ScubaItem extends Logger {
 		removeTag("durability");
 		addTag("durability", durability + "");
 
-		ItemStack temp = item.clone();
-		ItemMeta meta = temp.getItemMeta();
+		ItemMeta meta = itemMeta();
 
 		if (meta.hasLore()) {
 			lore =meta.getLore();
 		}
-		String durabilityDisplay = chat("&8durability: " + durability);
+		String durabilityDisplay = lore.get(lore.size() - 1);
 
-		lore.remove(lore.size() - 1);
+		// Check if it's actually displaying durability, then reset it.
+		if (durabilityDisplay.contains("durability:")) {
 
-		lore.add(" ");
+			durabilityDisplay = chat("&8durability: " + durability);
+			lore.remove(lore.size() - 1);
+		}
+
 		lore.add(durabilityDisplay);
 
 		meta.setLore(lore);
-		temp.setItemMeta(meta);
-
-		item = temp.clone();
+		item.setItemMeta(meta);
 
 		return this;
 	}

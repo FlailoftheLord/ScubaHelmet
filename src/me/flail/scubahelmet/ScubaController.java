@@ -87,7 +87,7 @@ public class ScubaController extends Logger {
 
 								}
 
-								if (durability == 0) {
+								if (durability <= 0) {
 									BossBar bar = plugin.server.getBossBar(
 											new NamespacedKey(plugin, plugin.namespacedKey.getKey() + "-" + player.getName()));
 									if (bar != null) {
